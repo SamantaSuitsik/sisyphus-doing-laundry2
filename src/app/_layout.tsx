@@ -1,18 +1,24 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import "../../global.css"
+import {DarkTheme, Stack, ThemeProvider} from "expo-router";
+import {useTheme} from "@/app/hooks/use-theme";
+import {SafeAreaProvider} from "react-native-safe-area-context";
+import {colorScheme} from "nativewind";
+import {useFonts} from "@expo-google-fonts/syne-tactile";
+import {SyneTactile_400Regular} from "@expo-google-fonts/syne-tactile/400Regular";
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+export default function RootLayout() {
+    const [fontsLoaded] = useFonts({
+        SyneTactile: SyneTactile_400Regular
+    })
+    return <ThemeProvider value={DarkTheme}>
+        <SafeAreaProvider>
+            <Stack
+                screenOptions={{
 
-SplashScreen.preventAutoHideAsync();
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
-  );
+                    headerShown: false
+                }}>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+        </SafeAreaProvider>
+    </ThemeProvider>;
 }
