@@ -3,7 +3,7 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
-import '@/global.css';
+import '../../global.css';
 
 import { Platform } from 'react-native';
 
@@ -17,9 +17,9 @@ export const Colors = {
   },
   dark: {
     text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
+    background: '#1e1f22',
+    backgroundElement: '#27282b',
+    backgroundSelected: '#333335',
     textSecondary: '#B0B4BA',
   },
 } as const;
