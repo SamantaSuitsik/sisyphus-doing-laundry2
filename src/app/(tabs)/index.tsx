@@ -8,7 +8,7 @@ import { Text } from "react-native";
 
 export default function Index() {
     const [name, setName] = useState<string>("");
-    const { game, myPlayerId, connected, joinGame } = useGameSocket();
+    const { game, myPlayerId, connected, joinGame, startGame } = useGameSocket();
 
 
     function handleJoinGame() {
@@ -33,8 +33,14 @@ export default function Index() {
         <View className="flex-1">
             <Text className="text-white font-bold">Players</Text>
             {game?.players.map((p, i) =>
-                <Text className="text-white mb-2">{`${i+1}. ${p.name}`}</Text>
+                <Text key={i} className="text-white mb-2">{`${i+1}. ${p.name}`}</Text>
             )}
         </View>
+
+        { name.trim().toLowerCase()==="i want to play" && <View >
+            <Button onPress={startGame}>
+                <Text>Start Game</Text>
+            </Button>
+        </View> }
     </SafeAreaView>;
 }

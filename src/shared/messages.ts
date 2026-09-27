@@ -10,7 +10,10 @@ export type ClientMessage =
 }
     | {
     type: "EARN_POINT";
-};
+}
+    | {
+    type: "START_GAME";
+}
 
 export type ServerMessage =
     | {

@@ -1,11 +1,9 @@
-import WebSocket, { WebSocketServer } from "ws";
+import WebSocket, {WebSocketServer} from "ws";
 import crypto from "crypto";
 
-import type { GameState, Player } from "@/shared/types";
-import type {
-    ClientMessage,
-    ServerMessage,
-} from "@/shared/messages";
+import type {Card, GameState, Player} from "@/shared/types";
+import type {ClientMessage, ServerMessage,} from "@/shared/messages";
+import {deck} from "@/server/Deck";
 
 interface PlayerSocket extends WebSocket {
     playerId?: string;
@@ -21,6 +19,8 @@ const game: GameState = {
     currentCard: null,
     status: "waiting",
 };
+
+let turnOrder: string[] = [];
 
 console.log("Server running on ws://localhost:3000");
 
@@ -83,7 +83,17 @@ function handleMessage(
 
         broadcastGameState();
     }
+
+    if (data.type === "START_GAME") {
+        startGame();
+    }
+
+    if (data.type === "NEXT_TURN") {
+        nextTurn();
+    }
 }
+
+
 
 function broadcastGameState(): void {
     const message: ServerMessage = {
@@ -98,4 +108,56 @@ function broadcastGameState(): void {
             client.send(serializedMessage);
         }
     });
+}
+
+function startGame(): void {
+    turnOrder = createTurnOrder(game.players);
+
+    game.currentPlayerId = turnOrder[0];
+    game.status = "playing";
+
+    game.currentCard = getNextCard();
+
+    broadcastGameState();
+}
+
+function createTurnOrder(players: Player[]): string[] {
+    return shuffle(
+        players.map((player) => player.id),
+    );
+}
+
+function shuffle<T>(array: T[]): T[] {
+    const copy = [...array];
+
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+
+    return copy;
+}
+
+function getNextCard(): Card {
+    return deck.at(randomInt(1,3)-1)!;
+}
+
+function randomInt(min: number, max: number) { // min and max included
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function nextTurn() {
+    game.currentCard = getNextCard();
+    game.currentPlayerId = findNextPlayer();
+    broadcastGameState();
+}
+
+function findNextPlayer(): string {
+    const currentIndex = turnOrder.indexOf(
+        game.currentPlayerId!
+    );
+
+    const nextPlayerId = (currentIndex + 1) % turnOrder.length;
+    return turnOrder.at(nextPlayerId)!;
 }

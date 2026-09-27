@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { ClientMessage, ServerMessage } from "@/shared/messages";
 import type { GameState } from "@/shared/types";
 
-const SERVER_URL = "ws://192.168.1.147:3000";
+const SERVER_URL = "ws://yourip:3000";
 
 interface UseGameSocketResult {
     game: GameState | null;
@@ -11,6 +11,7 @@ interface UseGameSocketResult {
     connected: boolean;
     error: string | null;
 
+    startGame: () => void;
     joinGame: (name: string) => void;
     nextTurn: () => void;
     earnPoint: () => void;
@@ -100,6 +101,12 @@ export function useGameSocket(): UseGameSocketResult {
         [sendMessage],
     );
 
+    const startGame = useCallback(() => {
+        sendMessage({
+            type: "START_GAME",
+        });
+    }, [sendMessage]);
+
     const nextTurn = useCallback(() => {
         sendMessage({
             type: "NEXT_TURN",
@@ -118,6 +125,7 @@ export function useGameSocket(): UseGameSocketResult {
         connected,
         error,
         joinGame,
+        startGame,
         nextTurn,
         earnPoint,
     };

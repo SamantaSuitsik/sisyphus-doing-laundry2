@@ -7,7 +7,7 @@ export interface Player {
 
 export interface Card {
     id: string,
-    text: string
+    name: string
 }
 
 export type GameStatus = "waiting" | "playing" | "finished";
