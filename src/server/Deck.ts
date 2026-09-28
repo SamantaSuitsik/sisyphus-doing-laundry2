@@ -2,15 +2,21 @@ import {Card} from "@/shared/types";
 
 export const deck: Card[] = [
     {
-        id: "card-1",
-        name: "Draw 2",
+        id: "1",
+        name: "men_drink_ok",
+    },{
+        id: "2",
+        name: "men_drink_ok",
+    },{
+        id: "3",
+        name: "men_drink_ok",
     },
     {
-        id: "card-2",
-        name: "Skip",
+        id: "4",
+        name: "communal_art_ok",
     },
     {
-        id: "card-3",
-        name: "Reverse",
+        id: "5",
+        name: "communal_art_ok",
     },
 ];
