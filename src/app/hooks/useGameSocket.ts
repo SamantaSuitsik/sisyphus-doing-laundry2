@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { ClientMessage, ServerMessage } from "@/shared/messages";
 import type { GameState } from "@/shared/types";
 
-const SERVER_URL = "ws://yourip:3000";
+const SERVER_URL = "ws://192.168.1.147:3000";
 
 interface UseGameSocketResult {
     game: GameState | null;

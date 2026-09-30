@@ -21,6 +21,7 @@ const game: GameState = {
 };
 
 let turnOrder: string[] = [];
+let remainingCards: Card[] = [...deck];
 
 console.log("Server running on ws://localhost:3000");
 
@@ -111,8 +112,7 @@ function broadcastGameState(): void {
 }
 
 function startGame(): void {
-    turnOrder = createTurnOrder(game.players);
-
+    turnOrder = game.players.map(p => p.id);
     game.currentPlayerId = turnOrder[0];
     game.status = "playing";
 
@@ -121,7 +121,7 @@ function startGame(): void {
     broadcastGameState();
 }
 
-function createTurnOrder(players: Player[]): string[] {
+function createRandomTurnOrder(players: Player[]): string[] {
     return shuffle(
         players.map((player) => player.id),
     );
@@ -139,8 +139,13 @@ function shuffle<T>(array: T[]): T[] {
     return copy;
 }
 
-function getNextCard(): Card {
-    return deck.at(randomInt(1,3)-1)!;
+function getNextCard(): Card | null {
+    if (remainingCards.length === 0) {
+        console.log("NEW PACK OF CARDS!");
+        remainingCards = [...deck];
+        //todo: testi kas tootab
+    }
+    return remainingCards.splice(randomInt(0 ,remainingCards.length-1), 1)[0];
 }
 
 function randomInt(min: number, max: number) { // min and max included
@@ -148,8 +153,18 @@ function randomInt(min: number, max: number) { // min and max included
 }
 
 function nextTurn() {
-    game.currentCard = getNextCard();
+    const card = getNextCard();
+    if (card === null) {
+        game.status = "finished";
+        broadcastGameState();
+        return;
+    }
+    game.currentCard = card;
     game.currentPlayerId = findNextPlayer();
+    console.log("removed card: ");
+    console.log(card);
+    console.log("remainingcards: ");
+    console.log(remainingCards);
     broadcastGameState();
 }
 

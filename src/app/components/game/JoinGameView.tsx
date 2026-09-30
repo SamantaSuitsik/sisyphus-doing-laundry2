@@ -8,7 +8,7 @@ import { Text } from "react-native";
 import {GameState} from "@/shared/types";
 
 interface IProps {
-    game: GameState,
+    game: GameState | null,
     joinGame: (name: string) => void,
     startGame: () => void
 }

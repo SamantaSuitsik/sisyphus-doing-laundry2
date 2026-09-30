@@ -45,14 +45,14 @@ export const deck: Card[] = [
     },
     {
         id: "12",
-        name: "choosepreson_ok",
+        name: "chooseperson_ok",
     },
     {
         id: "13",
         name: "glaze_ok" ,
     },
     {
-        id: "114",
+        id: "14",
         name: "glaze_ok",
     },
     {
@@ -119,4 +119,12 @@ export const deck: Card[] = [
         id: "30",
         name: "cardblow_ok",
     },
+    {
+        id: "31",
+        name: "you_drink_ok"
+    },
+    {
+        id: "32",
+        name: "you_drink_ok"
+    }
 ];

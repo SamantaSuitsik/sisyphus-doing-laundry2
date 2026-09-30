@@ -36,6 +36,10 @@ module.exports = {
         ring: "#A1A1AA",
 
         text: "#FFFFFF",
+        "character-blue": "#6074AB",
+        "character-accent": "#2e3b60",
+        "structure-purple": "#705caa",
+        "interaction-pink": "#f86dc8"
       },
 
       fontFamily: {
