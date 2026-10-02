@@ -25,6 +25,9 @@ export type CardName =
     | "womendrink_ok"
     | "cardblow_ok"
     | "you_drink_ok"
+    | "infection_ok"
+    | "taxcollector_ok"
+    | "rockpaper_ok"
 
 export type GameStatus = "waiting" | "playing" | "finished";
 

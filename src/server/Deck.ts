@@ -126,26 +126,26 @@ export const deck: Card[] = [
     {
         id: "32",
         name: "you_drink_ok"
-    }
+    },
     {
         id: "33",
         name: "taxcollector_ok"
-    }
+    },
     {
         id: "34",
         name: "taxcollector_ok"
-    }
+    },
     {
         id: "35",
         name: "infection_ok"
-    }
+    },
     {
         id: "36",
         name: "rockpaper_ok"
-    }
+    },
     {
         id: "37",
         name: "rockpaper_ok"
-    }
+    },
 
 ];
