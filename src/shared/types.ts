@@ -28,6 +28,8 @@ export type CardName =
     | "infection_ok"
     | "taxcollector_ok"
     | "rockpaper_ok"
+    | "trivia_ok"
+
 
 export type GameStatus = "waiting" | "playing" | "finished";
 

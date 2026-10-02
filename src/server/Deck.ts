@@ -147,5 +147,34 @@ export const deck: Card[] = [
         id: "37",
         name: "rockpaper_ok"
     },
+    {
+        id: "38",
+        name: "trivia_ok"
+    },
+    {
+        id: "39",
+        name: "trivia_ok"
+    },
+    {
+        id: "40",
+        name: "trivia_ok"
+    },
+    {
+        id: "41",
+        name: "trivia_ok"
+    },
+    {
+        id: "42",
+        name: "trivia_ok"
+    },
+    {
+        id: "43",
+        name: "trivia_ok"
+    },
+    {
+        id: "44",
+        name: "trivia_ok"
+    },
+
 
 ];
