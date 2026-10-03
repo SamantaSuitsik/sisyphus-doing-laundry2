@@ -6,6 +6,8 @@ import Separator from "@/assets/separator_svg.svg";
 import PointsDisplay from "@/app/components/ui/PointsDisplay";
 import {GameButton} from "@/app/components/ui/GameButton";
 import Counter from "@/app/components/ui/SipCounter";
+import {ChoosePlayerModal} from "@/app/components/ui/Modal";
+import {useState} from "react";
 
 interface IProps {
     game: GameState | null,
@@ -13,9 +15,14 @@ interface IProps {
     myPlayerId: string | null,
     myPoints: number,
     earnPoint: () => void,
+    onChoosePlayer: (playerId: string) => void;
 }
 
-export default function GameView({game, nextTurn, myPlayerId, myPoints, earnPoint}: IProps) {
+export default function GameView({game, nextTurn, myPlayerId, myPoints, earnPoint, onChoosePlayer}: IProps) {
+    console.log("game");
+    console.log(game);
+    const [showChoosePlayerModal, setShowChoosePlayerModal] = useState<boolean>(false);
+
     const currentPlayer: Player | undefined =
         game?.players.find(p => p.id === game.currentPlayerId);
 
@@ -23,6 +30,15 @@ export default function GameView({game, nextTurn, myPlayerId, myPoints, earnPoin
     const cardImage = game?.currentCard
         ? cardImages[game.currentCard.name]
         : undefined;
+
+    const needsToChoosePlayer =
+        game?.pendingAction?.type === "swapSeats" &&
+        game.pendingAction.playerId === myPlayerId;
+
+    function handleChoosePlayer(id: string) {
+        onChoosePlayer(id);
+        setShowChoosePlayerModal(false);
+    }
 
     return (
         <View className="flex-1 bg-background pt-3">
@@ -60,8 +76,20 @@ export default function GameView({game, nextTurn, myPlayerId, myPoints, earnPoin
                 <View className="w-full flex-row items-center mt-auto gap-6 px-5">
                     <Counter onPress={earnPoint} />
                     <GameButton label="Next" onPress={nextTurn}></GameButton>
+                    {needsToChoosePlayer && (
+                        <GameButton
+                            label="Choose player"
+                            onPress={() => setShowChoosePlayerModal(true)}
+                        />
+                    )}
                 </View>
             </View>
+
+            <ChoosePlayerModal
+                show={showChoosePlayerModal}
+                onModalClosed={() => setShowChoosePlayerModal(false)}
+                players={game?.players ?? []}
+                onPlayerChosen={handleChoosePlayer} />
         </View>
     );
 }

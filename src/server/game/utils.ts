@@ -1,4 +1,4 @@
-import type {Player} from "@/shared/types";
+import type {Card, Player} from "@/shared/types";
 
 export function randomInt(min: number, max: number) { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);

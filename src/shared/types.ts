@@ -8,6 +8,7 @@ export interface Player {
 export interface Card {
     id: string,
     name: CardName,
+    action?: CardAction
 }
 
 export type CardName =
@@ -30,6 +31,7 @@ export type CardName =
     | "rockpaper_ok"
     | "trivia_ok"
 
+export type CardAction = "swapSeats";
 
 export type GameStatus = "waiting" | "playing" | "finished";
 
@@ -37,6 +39,14 @@ export interface GameState {
     players: Player[],
     currentPlayerId: string | null,
     currentCard: Card | null,
-    status: GameStatus
+    status: GameStatus,
+    pendingAction: PendingAction
 
 }
+
+export type PendingAction =
+    | {
+        type: "swapSeats",
+        playerId: string
+    }
+    | null

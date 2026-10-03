@@ -16,6 +16,7 @@ interface UseGameSocketResult {
     joinGame: (name: string) => void;
     nextTurn: () => void;
     earnPoint: () => void;
+    choosePlayer: (name: string) => void;
 }
 
 export function useGameSocket(): UseGameSocketResult {
@@ -40,7 +41,9 @@ export function useGameSocket(): UseGameSocketResult {
         ws.onmessage = (event: MessageEvent<string>) => {
             try {
                 const message = JSON.parse(event.data) as ServerMessage;
-
+                if (message.type === "GAME_STATE") {
+                    console.log("<<< RECEIVED GAME_STATE", message.game);
+                }
                 switch (message.type) {
                     case "GAME_STATE":
                         setGame(message.game);
@@ -123,6 +126,16 @@ export function useGameSocket(): UseGameSocketResult {
         });
     }, [sendMessage]);
 
+    const choosePlayer = useCallback(
+        (chosenId: string) => {
+            sendMessage({
+                type: "CHOOSE_PLAYER",
+                chosenId,
+            });
+        },
+        [sendMessage],
+    );
+
     return {
         game,
         myPlayerId,
@@ -133,5 +146,6 @@ export function useGameSocket(): UseGameSocketResult {
         startGame,
         nextTurn,
         earnPoint,
+        choosePlayer,
     };
 }

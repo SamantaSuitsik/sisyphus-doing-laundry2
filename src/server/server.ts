@@ -68,9 +68,31 @@ function handleMessage(
     if (data.type === "EARN_POINT") {
         game.earnPoint(socket);
     }
+
+    if (data.type === "CHOOSE_PLAYER") {
+        if (!socket.playerId) {
+            return;
+        }
+
+        const success = game.choosePlayer(
+            socket.playerId,
+            data.chosenId,
+        );
+
+        if (success) {
+            broadcastGameState();
+        }
+    }
 }
 
 function broadcastGameState(): void {
+    const state = game.getState();
+    console.log(">>> BROADCAST");
+    console.log("card:", state.currentCard?.name);
+    console.log("action:", state.currentCard?.action);
+    console.log("pendingAction:", state.pendingAction);
+    console.log("currentPlayerId:", state.currentPlayerId);
+
     const message: ServerMessage = {
         type: "GAME_STATE",
         game: game.getState(),
