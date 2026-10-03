@@ -1,11 +1,8 @@
 import WebSocket, {WebSocketServer} from "ws";
-import crypto from "crypto";
-
-import type {Card, GameState, Player} from "@/shared/types";
 import type {ClientMessage, ServerMessage,} from "@/shared/messages";
-import {deck} from "@/server/Deck";
+import {Game} from "@/server/game/Game";
 
-interface PlayerSocket extends WebSocket {
+export interface PlayerSocket extends WebSocket {
     playerId?: string;
 }
 
@@ -13,15 +10,7 @@ const wss = new WebSocketServer({
     port: 3000,
 });
 
-const game: GameState = {
-    players: [],
-    currentPlayerId: null,
-    currentCard: null,
-    status: "waiting",
-};
-
-let turnOrder: string[] = [];
-let remainingCards: Card[] = [...deck];
+const game = new Game();
 
 console.log("Server running on ws://localhost:3000");
 
@@ -62,44 +51,29 @@ function handleMessage(
     data: ClientMessage,
 ): void {
     if (data.type === "JOIN_GAME") {
-        const id = crypto.randomUUID();
-
-        const player: Player = {
-            id,
-            name: data.name,
-            points: 0,
-            connected: true,
-        };
-
-        game.players.push(player);
-
-        socket.playerId = id;
-
-        const response: ServerMessage = {
-            type: "JOINED_GAME",
-            player,
-        };
-
-        socket.send(JSON.stringify(response));
-
+        game.joinGame(socket, data.name);
         broadcastGameState();
     }
 
     if (data.type === "START_GAME") {
-        startGame();
+        game.startGame();
+        broadcastGameState();
     }
 
     if (data.type === "NEXT_TURN") {
-        nextTurn();
+        game.nextTurn();
+        broadcastGameState();
+    }
+
+    if (data.type === "EARN_POINT") {
+        game.earnPoint(socket);
     }
 }
-
-
 
 function broadcastGameState(): void {
     const message: ServerMessage = {
         type: "GAME_STATE",
-        game,
+        game: game.getState(),
     };
 
     const serializedMessage = JSON.stringify(message);
@@ -109,70 +83,4 @@ function broadcastGameState(): void {
             client.send(serializedMessage);
         }
     });
-}
-
-function startGame(): void {
-    turnOrder = game.players.map(p => p.id);
-    game.currentPlayerId = turnOrder[0];
-    game.status = "playing";
-
-    game.currentCard = getNextCard();
-
-    broadcastGameState();
-}
-
-function createRandomTurnOrder(players: Player[]): string[] {
-    return shuffle(
-        players.map((player) => player.id),
-    );
-}
-
-function shuffle<T>(array: T[]): T[] {
-    const copy = [...array];
-
-    for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-    }
-
-    return copy;
-}
-
-function getNextCard(): Card | null {
-    if (remainingCards.length === 0) {
-        console.log("NEW PACK OF CARDS!");
-        remainingCards = [...deck];
-        //todo: testi kas tootab
-    }
-    return remainingCards.splice(randomInt(0 ,remainingCards.length-1), 1)[0];
-}
-
-function randomInt(min: number, max: number) { // min and max included
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function nextTurn() {
-    const card = getNextCard();
-    if (card === null) {
-        game.status = "finished";
-        broadcastGameState();
-        return;
-    }
-    game.currentCard = card;
-    game.currentPlayerId = findNextPlayer();
-    console.log("removed card: ");
-    console.log(card);
-    console.log("remainingcards: ");
-    console.log(remainingCards);
-    broadcastGameState();
-}
-
-function findNextPlayer(): string {
-    const currentIndex = turnOrder.indexOf(
-        game.currentPlayerId!
-    );
-
-    const nextPlayerId = (currentIndex + 1) % turnOrder.length;
-    return turnOrder.at(nextPlayerId)!;
 }

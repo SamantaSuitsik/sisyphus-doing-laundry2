@@ -4,9 +4,16 @@ import GameView from "@/app/components/game/GameView";
 import GameOverView from "@/app/components/game/GameOverView";
 
 export default function Index() {
-    const { game, nextTurn, myPlayerId, joinGame, startGame } = useGameSocket();
+    const { game, nextTurn, myPlayerId, myPoints, joinGame, startGame, earnPoint } = useGameSocket();
 
-    if (game?.status === "playing") return <GameView game={game} nextTurn={nextTurn} myPlayerId={myPlayerId} />;
+    if (game?.status === "playing")
+        return <GameView
+            game={game}
+            nextTurn={nextTurn}
+            myPlayerId={myPlayerId}
+            myPoints={myPoints}
+            earnPoint={earnPoint} />;
+
     if (game?.status === "finished") return <GameOverView />;
     return  <JoinGameView game={game} joinGame={joinGame} startGame={startGame} />
 }

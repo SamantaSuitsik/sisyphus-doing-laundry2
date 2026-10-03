@@ -8,6 +8,7 @@ const SERVER_URL = "ws://192.168.1.147:3000";
 interface UseGameSocketResult {
     game: GameState | null;
     myPlayerId: string | null;
+    myPoints: number;
     connected: boolean;
     error: string | null;
 
@@ -20,6 +21,7 @@ interface UseGameSocketResult {
 export function useGameSocket(): UseGameSocketResult {
     const [game, setGame] = useState<GameState | null>(null);
     const [myPlayerId, setMyPlayerId] = useState<string | null>(null);
+    const [myPoints, setMyPoints] = useState<number>(0);
     const [connected, setConnected] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -43,7 +45,9 @@ export function useGameSocket(): UseGameSocketResult {
                     case "GAME_STATE":
                         setGame(message.game);
                         break;
-
+                    case "POINTS_UPDATED":
+                        setMyPoints(message.points);
+                        break;
                     case "JOINED_GAME":
                         setMyPlayerId(message.player.id);
                         break;
@@ -122,6 +126,7 @@ export function useGameSocket(): UseGameSocketResult {
     return {
         game,
         myPlayerId,
+        myPoints,
         connected,
         error,
         joinGame,

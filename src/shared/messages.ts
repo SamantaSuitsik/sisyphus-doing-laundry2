@@ -27,4 +27,8 @@ export type ServerMessage =
     | {
     type: "ERROR";
     message: string;
-};
+}
+    | {
+    type: "POINTS_UPDATED";
+    points: number
+}
