@@ -4,10 +4,12 @@ export const deck: Card[] = [
     {
         id: "1",
         name: "men_drink_ok",
-    },{
+    },
+    {
         id: "2",
         name: "men_drink_ok",
-    },{
+    },
+    {
         id: "3",
         name: "communal_art_ok",
     },
@@ -90,10 +92,12 @@ export const deck: Card[] = [
     {
         id: "23",
         name: "swapseats_ok",
+        action: "swapSeats"
     },
     {
         id: "24",
         name: "swapseats_ok",
+        action: "swapSeats"
     },
     {
         id: "25",

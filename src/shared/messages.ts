@@ -1,4 +1,5 @@
 import type { GameState, Player } from "./types";
+import {TraitId} from "@/shared/traits/traits";
 
 export type ClientMessage =
     | {
@@ -14,6 +15,14 @@ export type ClientMessage =
     | {
     type: "START_GAME";
 }
+    | {
+    type: "CHOOSE_PLAYER";
+    chosenId: string;
+}
+    | {
+    type: "SPEND_TRAIT_POINT";
+    traitId: TraitId
+}
 
 export type ServerMessage =
     | {
@@ -27,4 +36,13 @@ export type ServerMessage =
     | {
     type: "ERROR";
     message: string;
-};
+}
+    | {
+    type: "POINTS_UPDATED";
+    points: number
+}
+    | {
+    type: "TRAITS_UPDATED";
+    points: number,
+    traitPoints: Partial<Record<TraitId, number>>
+}

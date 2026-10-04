@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { View } from "react-native";
 import Animated, {
     runOnJS,
     useAnimatedStyle,
@@ -9,8 +9,7 @@ import Animated, {
     withSpring,
     withTiming,
 } from "react-native-reanimated";
-import ButtonFramed from "@/assets/border_filled.svg";
-import {FramedButton} from "@/app/components/ui/FramedButton";
+import {GameButton} from "@/app/components/game/components/GameButton";
 
 type FloatingPlusOneProps = {
     id: number;
@@ -38,9 +37,9 @@ function FloatingPlusOne({ id, onFinish }: FloatingPlusOneProps) {
         );
 
         translateY.value = withTiming(
-            -55,
+            -120,
             {
-                duration: 700,
+                duration: 1200,
             },
             (finished) => {
                 if (finished) {
@@ -50,11 +49,11 @@ function FloatingPlusOne({ id, onFinish }: FloatingPlusOneProps) {
         );
 
         opacity.value = withSequence(
-            withTiming(1, { duration: 100 }),
+            withTiming(1, {duration: 150}),
             withDelay(
-                250,
+                650,
                 withTiming(0, {
-                    duration: 350,
+                    duration: 400,
                 })
             )
         );
@@ -85,9 +84,10 @@ function FloatingPlusOne({ id, onFinish }: FloatingPlusOneProps) {
     );
 }
 interface ICounterProps {
-    className?: string;
+    className?: string,
+    onPress?: () => void,
 }
-export default function Counter({className = ""}: ICounterProps) {
+export default function Counter({className = "", ...props}: ICounterProps) {
     const [count, setCount] = useState(0);
     const [animations, setAnimations] = useState<number[]>([]);
     const [nextId, setNextId] = useState(0);
@@ -99,6 +99,9 @@ export default function Counter({className = ""}: ICounterProps) {
 
         setNextId((current) => current + 1);
         setAnimations((current) => [...current, id]);
+        if (props?.onPress) {
+            props?.onPress();
+        }
     };
 
     const removeAnimation = (id: number) => {
@@ -108,7 +111,7 @@ export default function Counter({className = ""}: ICounterProps) {
     };
 
     return <View
-        className={`relative w-full ${className}`}>
+        className={`relative flex-1 ${className}`}>
         <View
             pointerEvents="none"
             className="absolute inset-0 z-10 items-center justify-end" >
@@ -120,14 +123,6 @@ export default function Counter({className = ""}: ICounterProps) {
                 )
             )}
         </View>
-        <FramedButton
-            onPress={handlePress}
-            className="w-full flex-1"
-        >
-            <Text className="text-2xl font-bold text-white">
-                +1 Add point
-            </Text>
-            <Text className="text-2xl font-bold text-white">{count}</Text>
-        </FramedButton>
+        <GameButton label="Sip taken" onPress={handlePress} />
     </View>;
 }

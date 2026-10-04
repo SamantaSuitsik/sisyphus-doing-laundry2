@@ -1,6 +1,5 @@
 import {SafeAreaView} from "react-native-safe-area-context";
-import {Image, Pressable, TextInput, View} from 'react-native';
-import {useGameSocket} from "@/app/hooks/useGameSocket";
+import {View} from 'react-native';
 import {useState} from "react";
 import {Input} from "@/app/components/ui/input";
 import {Button} from "@/app/components/ui/button";
