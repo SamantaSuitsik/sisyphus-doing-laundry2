@@ -1,6 +1,7 @@
 import WebSocket, {WebSocketServer} from "ws";
 import type {ClientMessage, ServerMessage,} from "@/shared/messages";
 import {Game} from "@/server/game/Game";
+import {TraitId} from "@/shared/traits/traits";
 
 export interface PlayerSocket extends WebSocket {
     playerId?: string;
@@ -83,6 +84,11 @@ function handleMessage(
             broadcastGameState();
         }
     }
+
+    if (data.type === "SPEND_TRAIT_POINT") {
+        spendTraitPoint(socket, data.traitId);
+    }
+
 }
 
 function broadcastGameState(): void {
@@ -105,4 +111,31 @@ function broadcastGameState(): void {
             client.send(serializedMessage);
         }
     });
+}
+
+function spendTraitPoint(socket: PlayerSocket, traitId: TraitId) {
+    const result = game.spendTraitPoint(
+        socket.playerId!,
+        traitId
+    );
+
+    if (!result.success) {
+        socket.send(JSON.stringify({
+            type: "ERROR",
+            error: result.error,
+        }));
+
+        return;
+    }
+
+    socket.send(JSON.stringify({
+        type: "POINTS_UPDATED",
+        points: result.points,
+    }));
+
+    socket.send(JSON.stringify({
+        type: "TRAITS_UPDATED",
+        points: result.points,
+        traitPoints: result.traitPoints,
+    }));
 }

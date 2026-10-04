@@ -9,7 +9,7 @@ import Animated, {
     withSpring,
     withTiming,
 } from "react-native-reanimated";
-import {GameButton} from "@/app/components/ui/GameButton";
+import {GameButton} from "@/app/components/game/components/GameButton";
 
 type FloatingPlusOneProps = {
     id: number;

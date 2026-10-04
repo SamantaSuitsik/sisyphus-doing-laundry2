@@ -1,7 +1,7 @@
-import {useGameSocket} from "@/app/hooks/useGameSocket";
 import JoinGameView from "@/app/components/game/JoinGameView";
 import GameView from "@/app/components/game/GameView";
 import GameOverView from "@/app/components/game/GameOverView";
+import {useGameSocket} from "@/app/hooks/GameSocketContext";
 
 export default function Index() {
     const { game, nextTurn, myPlayerId, myPoints, joinGame, startGame, earnPoint, choosePlayer } = useGameSocket();

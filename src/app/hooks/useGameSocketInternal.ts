@@ -2,10 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 
 import type { ClientMessage, ServerMessage } from "@/shared/messages";
 import type { GameState } from "@/shared/types";
+import {TraitId} from "@/shared/traits/traits";
 
 const SERVER_URL = "ws://192.168.1.147:3000";
 
-interface UseGameSocketResult {
+export interface UseGameSocketResult {
     game: GameState | null;
     myPlayerId: string | null;
     myPoints: number;
@@ -17,15 +18,18 @@ interface UseGameSocketResult {
     nextTurn: () => void;
     earnPoint: () => void;
     choosePlayer: (name: string) => void;
+    myTraitPoints: Partial<Record<TraitId, number>>;
+    spendTraitPoint: (traitId: TraitId) => void;
 }
 
-export function useGameSocket(): UseGameSocketResult {
+export function useGameSocketInternal(): UseGameSocketResult {
     const [game, setGame] = useState<GameState | null>(null);
     const [myPlayerId, setMyPlayerId] = useState<string | null>(null);
     const [myPoints, setMyPoints] = useState<number>(0);
+    const [myTraitPoints, setMyTraitPoints] = useState<Partial<Record<TraitId, number>>>({});
+
     const [connected, setConnected] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
     const [socket, setSocket] = useState<WebSocket | null>(null);
 
     useEffect(() => {
@@ -50,6 +54,10 @@ export function useGameSocket(): UseGameSocketResult {
                         break;
                     case "POINTS_UPDATED":
                         setMyPoints(message.points);
+                        break;
+                    case "TRAITS_UPDATED":
+                        setMyPoints(message.points);
+                        setMyTraitPoints(message.traitPoints);
                         break;
                     case "JOINED_GAME":
                         setMyPlayerId(message.player.id);
@@ -136,6 +144,13 @@ export function useGameSocket(): UseGameSocketResult {
         [sendMessage],
     );
 
+    const spendTraitPoint = useCallback((traitId: TraitId) => {
+        sendMessage({
+            type: "SPEND_TRAIT_POINT",
+            traitId,
+        });
+    }, [sendMessage])
+
     return {
         game,
         myPlayerId,
@@ -147,5 +162,7 @@ export function useGameSocket(): UseGameSocketResult {
         nextTurn,
         earnPoint,
         choosePlayer,
+        myTraitPoints,
+        spendTraitPoint
     };
 }

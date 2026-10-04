@@ -5,6 +5,8 @@ import {PlayerSocket} from "@/server/server";
 import {deck} from "@/server/Deck";
 import {randomInt} from "@/server/game/utils"
 import {applyCardActions} from "@/server/game/Rules";
+import {TraitId, TRAITS} from "@/shared/traits/traits";
+import {getTraitTotalCost} from "@/shared/traits/utils";
 
 export class Game {
     public players: Player[] = [];
@@ -45,6 +47,7 @@ export class Game {
             id,
             name,
             points: 0,
+            traitPoints: {},
             connected: true,
         };
 
@@ -194,6 +197,61 @@ export class Game {
         console.log("new turnorder");
         console.log(newOrder);
         this.setTurnOrder(newOrder);
+    }
 
+    spendTraitPoint(playerId: string, traitId: TraitId) {
+        const player = this.players.find(
+            player => player.id === playerId
+        );
+
+        if (!player) {
+            return {
+                success: false,
+                error: "Player not found",
+            };
+        }
+
+        const trait = TRAITS.find(
+            trait => trait.id === traitId
+        );
+
+        if (!trait) {
+            return {
+                success: false,
+                error: "Trait not found",
+            };
+        }
+
+        const spent = player.traitPoints?.[traitId] ?? 0;
+        const totalCost = getTraitTotalCost(trait);
+
+        if (spent >= totalCost) {
+            return {
+                success: false,
+                error: "Trait is already maxed",
+            };
+        }
+
+        if (player.points <= 0) {
+            return {
+                success: false,
+                error: "No points available",
+            };
+        }
+
+        // Spend one normal game point
+        player.points -= 1;
+
+        // Add one point to this trait
+        player.traitPoints = {
+            ...player.traitPoints,
+            [traitId]: spent + 1,
+        };
+
+        return {
+            success: true,
+            points: player.points,
+            traitPoints: player.traitPoints,
+        };
     }
 }

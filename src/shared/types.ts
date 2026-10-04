@@ -1,7 +1,10 @@
+import {TraitId} from "@/shared/traits/traits";
+
 export interface Player {
     id: string,
     name: string,
     points: number,
+    traitPoints: Partial<Record<TraitId, number>>,
     connected: boolean
 }
 

@@ -4,9 +4,9 @@ import {GameState, Player} from "@/shared/types";
 import {cardImages} from "@/app/constants/CardImages";
 import Separator from "@/assets/separator_svg.svg";
 import PointsDisplay from "@/app/components/ui/PointsDisplay";
-import {GameButton} from "@/app/components/ui/GameButton";
-import Counter from "@/app/components/ui/SipCounter";
-import {ChoosePlayerModal} from "@/app/components/ui/Modal";
+import {GameButton} from "@/app/components/game/components/GameButton";
+import Counter from "@/app/components/game/components/SipCounter";
+import {ChoosePlayerModal} from "@/app/components/game/components/Modal";
 import {useState} from "react";
 
 interface IProps {
@@ -19,8 +19,6 @@ interface IProps {
 }
 
 export default function GameView({game, nextTurn, myPlayerId, myPoints, earnPoint, onChoosePlayer}: IProps) {
-    console.log("game");
-    console.log(game);
     const [showChoosePlayerModal, setShowChoosePlayerModal] = useState<boolean>(false);
 
     const currentPlayer: Player | undefined =

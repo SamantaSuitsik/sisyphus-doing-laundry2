@@ -1,29 +1,64 @@
-import {Pressable, View} from "react-native";
-import {SafeAreaView} from "react-native-safe-area-context";
+import {ScrollView, View} from "react-native";
+import {Text} from "@/app/components/ui/text";
+import PointsDisplay from "@/app/components/ui/PointsDisplay";
+import {TRAITS, TraitId} from "@/shared/traits/traits";
+import {TraitTree} from "@/app/components/traits/components/TraitTree";
 
-export default function TraitsView() {
-    return  <SafeAreaView className="flex-1">
-        <View className="relative h-32 w-full justify-center">
+interface TraitsViewProps {
+    myPoints: number;
+    myTraitPoints: Partial<Record<TraitId, number>>;
+    spendTraitPoint: (traitId: TraitId) => void;
+}
 
-            <View
-                className="absolute h-2 bg-gray-300"
-                style={{
-                    left: 32,
-                    right: 32,
-                    top: "50%",
-                }}
-            />
+export default function TraitsView({
+                                       myPoints,
+                                       myTraitPoints,
+                                       spendTraitPoint,
+                                   }: TraitsViewProps) {
+    return (
+        <View className="flex-1 bg-background">
+            <ScrollView
+                contentContainerClassName="px-5 pt-6 pb-10"
+                showsVerticalScrollIndicator={false}
+            >
 
-            <Pressable
-                className="absolute left-4 h-8 w-8 rounded-full bg-blue-500"
-                style={{ top: "50%", transform: [{ translateY: -32 }] }}
-            />
+                <View className="items-center">
+                    <Text className="text-3xl font-bold text-foreground">
+                        Traits
+                    </Text>
 
-            <Pressable
-                className="absolute right-4 h-12 w-12 rounded-full bg-gray-300"
-                style={{ top: "50%", transform: [{ translateY: -24 }] }}
-            />
+                    <Text className="mt-2 text-center text-muted-foreground">
+                        Spend your points to unlock real-life perks.
+                    </Text>
 
+                    <View className="mt-5">
+                        <PointsDisplay
+                            points={myPoints}
+                            size={120}
+                        />
+                    </View>
+
+                    <Text className="mt-3 text-sm text-muted-foreground">
+                        Available points
+                    </Text>
+                </View>
+
+                <View className="mt-8">
+                    {TRAITS.map(trait => (
+                        <TraitTree
+                            key={trait.id}
+                            trait={trait}
+                            spentPoints={
+                                myTraitPoints[trait.id] ?? 0
+                            }
+                            availablePoints={myPoints}
+                            onSpendPoint={() =>
+                                spendTraitPoint(trait.id)
+                            }
+                        />
+                    ))}
+                </View>
+            </ScrollView>
         </View>
-    </SafeAreaView>;
+    );
 }
