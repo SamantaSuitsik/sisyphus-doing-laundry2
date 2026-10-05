@@ -45,9 +45,6 @@ export function useGameSocketInternal(): UseGameSocketResult {
         ws.onmessage = (event: MessageEvent<string>) => {
             try {
                 const message = JSON.parse(event.data) as ServerMessage;
-                if (message.type === "GAME_STATE") {
-                    console.log("<<< RECEIVED GAME_STATE", message.game);
-                }
                 switch (message.type) {
                     case "GAME_STATE":
                         setGame(message.game);

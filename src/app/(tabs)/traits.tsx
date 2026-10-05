@@ -1,5 +1,5 @@
-import TraitsView from "../components/traits/TraitsView";
-import {useGameSocket} from "@/app/hooks/GameSocketContext";
+import {useGameSocket} from "@/hooks/GameSocketContext";
+import TraitsView from "@/components/traits/TraitsView";
 
 export default function Traits() {
     const { myPoints, myTraitPoints, spendTraitPoint } = useGameSocket();

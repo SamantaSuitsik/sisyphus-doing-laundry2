@@ -1,5 +1,5 @@
 import {FlatList, Modal, Pressable, View} from "react-native";
-import { Text } from "@/app/components/ui/text";
+import { Text } from "@/components/ui/text";
 import {Player} from "@/shared/types";
 
 interface IProps {

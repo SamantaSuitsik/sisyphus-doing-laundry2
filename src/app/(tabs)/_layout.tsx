@@ -1,5 +1,5 @@
 import { NativeTabs } from 'expo-router/unstable-native-tabs';
-import {GameSocketProvider} from "@/app/hooks/GameSocketContext";
+import {GameSocketProvider} from "@/hooks/GameSocketContext";
 
 export default function TabLayout() {
     return (

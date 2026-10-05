@@ -1,5 +1,5 @@
 import {View} from "react-native";
-import {Text} from "@/app/components/ui/text";
+import {Text} from "@/components/ui/text";
 import BorderFilled from "@/assets/border_filled.svg";
 
 interface PointsDisplayProps {

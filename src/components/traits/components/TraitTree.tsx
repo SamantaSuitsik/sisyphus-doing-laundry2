@@ -1,8 +1,8 @@
 import { Pressable, ScrollView, View } from "react-native";
 import { Plus } from "lucide-react-native";
 
-import { Text } from "@/app/components/ui/text";
-import {traitIcons} from "@/app/components/traits/constants/TraitIcons";
+import { Text } from "@/components/ui/text";
+import {traitIcons} from "@/components/traits/constants/TraitIcons";
 import {getTraitTotalCost} from "@/shared/traits/utils";
 import {TraitDefinition} from "@/shared/traits/traits";
 

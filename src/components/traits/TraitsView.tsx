@@ -1,8 +1,8 @@
 import {ScrollView, View} from "react-native";
-import {Text} from "@/app/components/ui/text";
-import PointsDisplay from "@/app/components/ui/PointsDisplay";
+import {Text} from "@/components/ui/text";
+import PointsDisplay from "@/components/ui/PointsDisplay";
 import {TRAITS, TraitId} from "@/shared/traits/traits";
-import {TraitTree} from "@/app/components/traits/components/TraitTree";
+import {TraitTree} from "@/components/traits/components/TraitTree";
 
 interface TraitsViewProps {
     myPoints: number;

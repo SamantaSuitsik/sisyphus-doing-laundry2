@@ -1,12 +1,12 @@
 import {Image, View} from "react-native";
-import {Text} from "@/app/components/ui/text";
+import {Text} from "@/components/ui/text";
 import {GameState, Player} from "@/shared/types";
-import {cardImages} from "@/app/constants/CardImages";
+import {cardImages} from "@/constants/CardImages";
 import Separator from "@/assets/separator_svg.svg";
-import PointsDisplay from "@/app/components/ui/PointsDisplay";
-import {GameButton} from "@/app/components/game/components/GameButton";
-import Counter from "@/app/components/game/components/SipCounter";
-import {ChoosePlayerModal} from "@/app/components/game/components/Modal";
+import PointsDisplay from "@/components/ui/PointsDisplay";
+import {GameButton} from "@/components/game/components/GameButton";
+import Counter from "@/components/game/components/SipCounter";
+import {ChoosePlayerModal} from "@/components/game/components/Modal";
 import {useState} from "react";
 
 interface IProps {

@@ -1,8 +1,8 @@
 import {SafeAreaView} from "react-native-safe-area-context";
 import {View} from 'react-native';
 import {useState} from "react";
-import {Input} from "@/app/components/ui/input";
-import {Button} from "@/app/components/ui/button";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
 import { Text } from "react-native";
 import {GameState} from "@/shared/types";
 
