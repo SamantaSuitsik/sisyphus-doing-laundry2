@@ -3,6 +3,7 @@ import {Text} from "@/components/ui/text";
 import PointsDisplay from "@/components/ui/PointsDisplay";
 import {TRAITS, TraitId} from "@/shared/traits/traits";
 import {TraitTree} from "@/components/traits/components/TraitTree";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 interface TraitsViewProps {
     myPoints: number;
@@ -16,31 +17,27 @@ export default function TraitsView({
                                        spendTraitPoint,
                                    }: TraitsViewProps) {
     return (
-        <View className="flex-1 bg-background">
+        <SafeAreaView className="flex-1 bg-background">
             <ScrollView
                 contentContainerClassName="px-5 pt-6 pb-10"
                 showsVerticalScrollIndicator={false}
             >
 
                 <View className="items-center">
-                    <Text className="text-3xl font-bold text-foreground">
+                    <Text variant="h1">
                         Traits
                     </Text>
 
                     <Text className="mt-2 text-center text-muted-foreground">
-                        Spend your points to unlock real-life perks.
+                        Spend your points to unlock perks.
                     </Text>
 
-                    <View className="mt-5">
+                    <View className="self-end">
                         <PointsDisplay
                             points={myPoints}
-                            size={120}
+                            size={180}
                         />
                     </View>
-
-                    <Text className="mt-3 text-sm text-muted-foreground">
-                        Available points
-                    </Text>
                 </View>
 
                 <View className="mt-8">
@@ -59,6 +56,6 @@ export default function TraitsView({
                     ))}
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 }

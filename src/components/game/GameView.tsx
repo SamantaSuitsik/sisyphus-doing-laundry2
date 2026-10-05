@@ -43,7 +43,7 @@ export default function GameView({game, nextTurn, myPlayerId, myPoints, earnPoin
             <View className="items-center">
                 <PointsDisplay
                     points={myPoints}
-                    size={160}
+                    size={180}
                 />
             </View>
 
