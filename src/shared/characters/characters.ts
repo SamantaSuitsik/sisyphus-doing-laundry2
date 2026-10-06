@@ -1,126 +1,86 @@
 export type CharacterId =
-    | "sheriff"
-    | "jester"
-    | "oracle"
-    | "pirate"
-    | "wizard"
-    | "vampire"
-    | "knight"
-    | "bard";
+    | "cocktailspecialist"
+    | "comrade"
+    | "gymlover"
+    | "baller"
+    | "dj"
+    | "thief"
+    | "strategist"
+    ;
 
 export interface Character {
     id: CharacterId;
     name: string;
-    /** Short tagline shown under the name */
-    title: string;
-    /** Lore / flavour text */
     description: string;
-    /** The real-life perk this character has */
-    traitName: string;
     traitDescription: string;
-    /** Emoji shown next to the trait */
-    traitEmoji: string;
-    /** Main colour used for glow / accents on the character screen */
     accentColor: string;
 }
 
 export const CHARACTERS: Character[] = [
     {
-        id: "sheriff",
-        name: "The Sheriff",
-        title: "Keeper of the table",
+        id: "cocktailspecialist",
+        name: "Cocktail Specialist",
         description:
-            "Nobody knows who made him the law, but nobody dares to argue.",
-        traitName: "Final Say",
+            "There is this evil in his eyes, but he makes good drinks",
         traitDescription:
-            "Once per game, overrule any decision at the table. No appeals.",
-        traitEmoji: "⚖️",
-        accentColor: "#E0A030",
+            "You can max out drink type trait instantly, whenever someone else does this, add 2 to your sip counter and make their cocktail",
+        accentColor: "#86c292",
     },
     {
-        id: "jester",
-        name: "The Jester",
-        title: "Chaos in a funny hat",
+        id: "comrade",
+        name: "Comrade",
         description:
-            "Rules are more like suggestions, and suggestions are meant to be ruined.",
-        traitName: "Fool's Pardon",
+            "There is no you and me, only us",
         traitDescription:
-            "You may skip one dare or action card without penalty.",
-        traitEmoji: "🃏",
-        accentColor: "#E2506F",
+            "Always pick someone to drink with you",
+        accentColor: "#74a0d1",
     },
     {
-        id: "oracle",
-        name: "The Oracle",
-        title: "She saw this coming",
+        id: "gymlover",
+        name: "Gym Lover",
         description:
-            "Always one step ahead, and never lets anyone forget it.",
-        traitName: "Foresight",
+            "The heart is the strongest massel",
         traitDescription:
-            "Before your turn, you may predict the next card. Guess right and give out 2 sips.",
-        traitEmoji: "🔮",
-        accentColor: "#9B6BFF",
+            "Do 1 push-up whenever you drink. Whenever you hit 5 push-ups, everyone has to do 5 push-ups or drink 1 sip",
+        accentColor: "#9e5476",
     },
     {
-        id: "pirate",
-        name: "The Pirate",
-        title: "Plunder first, ask later",
+        id: "baller",
+        name: "Baller",
         description:
-            "Sailed every sea, lost every map, still never lost a drinking contest.",
-        traitName: "Plunder",
+            "Knows ball",
         traitDescription:
-            "Once per round, steal a sip from any player of your choice.",
-        traitEmoji: "🏴‍☠️",
-        accentColor: "#2FB8A6",
+            "On your turn, you can throw 2 balls: >50 = everyone drinks 2 sips; 40-50 = pick someone to drink; <40 = you drink",
+        accentColor: "#2341c4",
     },
     {
-        id: "wizard",
-        name: "The Wizard",
-        title: "Spells. Mostly harmless.",
+        id: "dj",
+        name: "Dee Jay",
         description:
-            "Claims every coincidence was intentional. Nobody can prove otherwise.",
-        traitName: "Hex",
+            "One with the tunes, small and weird",
         traitDescription:
-            "Pick a word. Anyone who says it has to take a sip until your next turn.",
-        traitEmoji: "🪄",
-        accentColor: "#4F8CFF",
+            "On your turn, if you can name the song/artist, give out 2 sips, otherwise you drink",
+        accentColor: "#627c8e",
     },
     {
-        id: "vampire",
-        name: "The Vampire",
-        title: "Thirsty since 1642",
+        id: "thief",
+        name: "Thief",
         description:
-            "Hates sunlight, loves company, and absolutely loves your drink.",
-        traitName: "Bite",
+            "Steals your heart faster than a bami at 4am",
         traitDescription:
-            "Once per game, make another player share their drink with you.",
-        traitEmoji: "🧛",
-        accentColor: "#C0262D",
+            "Get a token every 5 sips. Token can be used to steal someone's action (either card or character action)",
+        accentColor: "#421f42",
     },
     {
-        id: "knight",
-        name: "The Knight",
-        title: "Honour above all",
+        id: "strategist",
+        name: "Strategist",
         description:
-            "Sworn to protect the weak, the thirsty, and the last slice of pizza.",
-        traitName: "Shield",
+            "Playing chess in a drinking game",
         traitDescription:
-            "Take a sip in place of another player once per round.",
-        traitEmoji: "🛡️",
-        accentColor: "#8FA3B8",
+            "On your turn, add 1 sip to your sip counter",
+        accentColor: "#144237",
     },
-    {
-        id: "bard",
-        name: "The Bard",
-        title: "Every night is a ballad",
-        description:
-            "Turns every small moment into a song nobody asked for.",
-        traitName: "Encore",
-        traitDescription:
-            "Sing a line about any player. If the table cheers, they drink.",
-        traitEmoji: "🎶",
-        accentColor: "#F08A4B",
-    },
+
 ];
 
 export function getCharacter(id?: CharacterId | null): Character | undefined {
