@@ -179,6 +179,10 @@ export const deck: Card[] = [
         id: "44",
         name: "trivia_ok"
     },
+    {
+        id: "45",
+        name: "death_ok"
+    },
 
 
 ];

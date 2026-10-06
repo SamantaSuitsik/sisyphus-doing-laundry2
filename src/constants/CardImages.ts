@@ -19,7 +19,8 @@ export const cardImages: Record<CardName, ImageSourcePropType> = {
     infection_ok: require("@/assets/deck/infection_ok.png"),
     taxcollector_ok: require("@/assets/deck/taxcollector_ok.png"),
     rockpaper_ok: require("@/assets/deck/rockpaper_ok.png"),
-    trivia_ok: require("@/assets/deck/trivia_ok.png")
+    trivia_ok: require("@/assets/deck/trivia_ok.png"),
+    death_ok: require("@/assets/deck/death_ok.png")
 
 
 }

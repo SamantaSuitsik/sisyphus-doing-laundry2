@@ -1,14 +1,16 @@
-export type TraitId = | "drink" | "ruleMaker";
+export type TraitId =  "drink" | "ruleMaker" | "trivia" | "gambling" ;
 
 export type TraitIconName =
     | "beer"
     | "bottle-wine"
     | "martini"
-    | "users"
-    | "dices"
-    | "trophy"
-    | "flame"
-    | "circle-question-mark";
+    | "crown"
+    | "square-stack"
+    | "brain"
+    | "chef-hat"
+    | "trending-up-down"
+    | "squircle-dashed"
+    | "trending-up";
 
 export interface TraitLevel {
     id: string,
@@ -28,28 +30,28 @@ export interface TraitDefinition {
 export const TRAITS: TraitDefinition[] = [
     {
         id: "drink",
-        name: "Drink",
-        description: "Unlock better drinks.",
+        name: "Drink type",
+        description: "Road to new drinks",
         levels: [
             {
                 id: "beer",
                 name: "Beer",
-                description: "A good beer",
+                description: "the drink of the commoners",
                 cost: 0,
                 icon: "beer",
             },
             {
                 id: "wine",
                 name: "Wine",
-                description: "A fine glass of wine",
-                cost: 5,
+                description: "a bit more sophisticated aren't we",
+                cost: 4,
                 icon: "bottle-wine",
             },
             {
                 id: "cocktail",
                 name: "Cocktail",
-                description: "Swirly funny tail",
-                cost: 5,
+                description: "true enjoyer of fine beverages",
+                cost: 4,
                 icon: "martini",
             },
         ],
@@ -57,28 +59,93 @@ export const TRAITS: TraitDefinition[] = [
     {
         id: "ruleMaker",
         name: "Rule Maker",
-        description: "Socially powerful perks.",
+        description: "Road to great evil",
         levels: [
             {
-                id: "social1",
-                name: "Social I",
-                description: "First social perk",
+                id: "rulemaker0",
+                name: "Darkness",
+                description: "Nothing cool happening yet",
                 cost: 0,
-                icon: "users",
+                icon: "squircle-dashed",
             },
             {
-                id: "social2",
-                name: "Social II",
-                description: "Second social perk",
+                id: "rulemaker1",
+                name: "Great wit",
+                description: "Say something smart, like a king",
+                cost: 1,
+                icon: "chef-hat",
+            },
+            {
+                id: "rulemaker2",
+                name: "Great strength",
+                description: "Drink 3 sips, don't add them to the sip counter",
                 cost: 3,
-                icon: "users",
+                icon: "square-stack",
             },
             {
-                id: "social3",
-                name: "Social III",
-                description: "Third social perk",
-                cost: 6,
-                icon: "trophy",
+                id: "rulemaker3",
+                name: "New rule",
+                description: "Make a new rule for the game",
+                cost: 5,
+                icon: "crown",
+            },
+        ],
+    },
+    {
+        id: "trivia",
+        name: "Trivia",
+        description: "Road to great knowledge",
+        levels: [
+            {
+                id: "trivia1",
+                name: "Trivia",
+                description: "Do one trivia, wrong answer = drink",
+                cost: 4,
+                icon: "brain",
+            },
+            {
+                id: "trivia2",
+                name: "Trivia",
+                description: "Do one trivia, wrong answer = drink",
+                cost: 4,
+                icon: "brain",
+            },
+            {
+                id: "trivia3",
+                name: "Trivia",
+                description: "Do one trivia, wrong answer = drink",
+                cost: 4,
+                icon: "brain",
+            },
+        ],
+    },
+    {
+        id: "gambling",
+        name: "Gambling",
+        description: "Road to maxing your potential",
+        levels: [
+            {
+                id: "gambling1",
+                name: "1 sip bets",
+                description: "Bet on duel results, if you win, give out 1 sip that is not added to sip counter, " +
+                    "if you lose, remove 1 sip from yourself",
+                cost: 5,
+                icon: "trending-up-down",
+            },
+            {
+                id: "gambling2",
+                name: "2 sip bets",
+                description: "Bet on duel results, if you win, give out 2 sips that is not added to sip counter, " +
+                    "if you lose, remove 2 sips from yourself",
+                cost: 4,
+                icon: "trending-up-down",
+            },
+            {
+                id: "gambling3",
+                name: "Guaranteed win",
+                description: "Losing a bet won't affect you anymore",
+                cost: 4,
+                icon: "trending-up",
             },
         ],
     },

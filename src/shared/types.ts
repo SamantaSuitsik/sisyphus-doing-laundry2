@@ -33,6 +33,7 @@ export type CardName =
     | "taxcollector_ok"
     | "rockpaper_ok"
     | "trivia_ok"
+    | "death_ok"
 
 export type CardAction = "swapSeats";
 
