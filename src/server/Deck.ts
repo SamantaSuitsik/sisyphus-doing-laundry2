@@ -23,27 +23,28 @@ export const deck: Card[] = [
     },
     {
         id: "6",
-        name: "ballstothewall_ok",
+        name: "communal_art_ok",
     },
     {
         id: "7",
+        name: "communal_art_ok",
+    },
+
+    {
+        id: "8",
         name: "ballstothewall_ok",
     },
     {
-        id: "8",
-        name: "ballswall_ok",
-    },
-    {
         id: "9",
-        name: "ballswall_ok",
+        name: "ballstothewall_ok",
     },
     {
         id: "10",
-        name: "chooseperson_ok",
+        name: "ballswall_ok",
     },
     {
         id: "11",
-        name: "chooseperson_ok",
+        name: "ballswall_ok",
     },
     {
         id: "12",
@@ -51,27 +52,27 @@ export const deck: Card[] = [
     },
     {
         id: "13",
-        name: "glaze_ok" ,
+        name: "chooseperson_ok",
     },
     {
         id: "14",
-        name: "glaze_ok",
+        name: "chooseperson_ok",
     },
     {
         id: "15",
-        name: "kingofquestions_ok",
+        name: "glaze_ok" ,
     },
     {
         id: "16",
-        name: "kingofquestions_ok",
+        name: "glaze_ok",
     },
     {
         id: "17",
-        name: "skribbl_ok",
+        name: "kingofquestions_ok",
     },
     {
         id: "18",
-        name: "skribbl_ok",
+        name: "kingofquestions_ok",
     },
     {
         id: "19",
@@ -83,81 +84,81 @@ export const deck: Card[] = [
     },
     {
         id: "21",
-        name: "stealasip_ok",
+        name: "skribbl_ok",
     },
     {
         id: "22",
-        name: "stealasip_ok",
+        name: "skribbl_ok",
     },
     {
         id: "23",
-        name: "swapseats_ok",
-        action: "swapSeats"
+        name: "stealasip_ok",
     },
     {
         id: "24",
+        name: "stealasip_ok",
+    },
+    {
+        id: "25",
         name: "swapseats_ok",
         action: "swapSeats"
     },
     {
-        id: "25",
-        name: "thumbwar_ok",
-    },
-    {
         id: "26",
-        name: "thumbwar_ok",
+        name: "swapseats_ok",
+        action: "swapSeats"
     },
     {
         id: "27",
-        name: "womendrink_ok",
+        name: "thumbwar_ok",
     },
     {
         id: "28",
-        name: "womendrink_ok",
+        name: "thumbwar_ok",
     },
     {
         id: "29",
-        name: "cardblow_ok",
+        name: "womendrink_ok",
     },
     {
         id: "30",
-        name: "cardblow_ok",
+        name: "womendrink_ok",
     },
     {
         id: "31",
-        name: "you_drink_ok"
+        name: "cardblow_ok",
     },
     {
         id: "32",
-        name: "you_drink_ok"
+        name: "cardblow_ok",
     },
     {
         id: "33",
-        name: "taxcollector_ok"
+        name: "you_drink_ok"
     },
     {
         id: "34",
-        name: "taxcollector_ok"
+        name: "you_drink_ok"
     },
     {
         id: "35",
-        name: "infection_ok"
+        name: "taxcollector_ok"
     },
     {
         id: "36",
-        name: "rockpaper_ok"
+        name: "taxcollector_ok"
     },
     {
         id: "37",
-        name: "rockpaper_ok"
+        name: "infection_ok"
     },
     {
         id: "38",
-        name: "trivia_ok"
+        name: "rockpaper_ok"
     },
     {
         id: "39",
-        name: "trivia_ok"
+        name: "rockpaper_ok"
     },
     {
         id: "40",
@@ -181,6 +182,14 @@ export const deck: Card[] = [
     },
     {
         id: "45",
+        name: "trivia_ok"
+    },
+    {
+        id: "46",
+        name: "trivia_ok"
+    },
+    {
+        id: "47",
         name: "death_ok"
     },
 
