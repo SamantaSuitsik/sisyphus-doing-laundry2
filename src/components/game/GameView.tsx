@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
     Image,
+    Platform,
     Pressable,
     ScrollView,
     Text,
@@ -346,7 +347,7 @@ export default function GameView({
             {/* Top row: whose turn (left), my sips (right) */}
             <View
                 className="flex-row items-center px-4"
-                style={{ paddingTop: insets.top + 8 }}
+                style={{ paddingTop: insets.top + (Platform.OS === "ios" ? 0 : 8) }}
             >
                 <Animated.View
                     key={currentPlayer?.id ?? "none"}
@@ -400,7 +401,7 @@ export default function GameView({
             <CharacterBox character={myCharacter} />
 
             {/* Actions */}
-            <View className="px-4 mt-3" style={{ paddingBottom: 20 }}>
+            <View className="px-4 mt-3" style={{ paddingBottom: insets.bottom + 12 }}>
                 {needsToChoosePlayer && (
                     <Animated.View
                         entering={FadeInDown.springify()}
