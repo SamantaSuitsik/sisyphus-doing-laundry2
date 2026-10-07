@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import {useEffect, useRef, useState} from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Plus, Trophy } from "lucide-react-native";
@@ -11,10 +11,11 @@ import Animated, {
     withTiming,
 } from "react-native-reanimated";
 
-import { TraitDefinition } from "@/shared/traits/traits";
+import {TraitDefinition, TraitLevel} from "@/shared/traits/traits";
 import { getTraitTotalCost } from "@/shared/traits/utils";
 import { TraitLevelNode } from "@/components/traits/components/TraitLevelNode";
 import {colors} from "@/constants/GameColors";
+import {TraitDescriptionModal} from "@/components/traits/components/TraitDescriptionModal";
 
 interface TraitTreeProps {
     trait: TraitDefinition;
@@ -180,10 +181,10 @@ export function TraitTree({
                               onSpendPoint,
                               index = 0,
                           }: TraitTreeProps) {
+    const [selectedLevel, setSelectedLevel] = useState<TraitLevel | null>(null);
     const totalCost = getTraitTotalCost(trait);
     const isMaxed = spentPoints >= totalCost;
     const canSpend = availablePoints > 0 && !isMaxed;
-
     // points needed to unlock each level
     const starts: number[] = [];
     let acc = 0;
@@ -268,6 +269,7 @@ export function TraitTree({
                                             unlocked={spentPoints >= starts[i]}
                                             isNext={i === nextIndex}
                                             cost={level.cost}
+                                            onPress={() => setSelectedLevel(level)}
                                         />
                                         {next && (
                                             <ProgressRail
@@ -312,6 +314,13 @@ export function TraitTree({
                     </View>
                 </LinearGradient>
             </LinearGradient>
+
+            <TraitDescriptionModal
+                visible={selectedLevel !== null}
+                title={selectedLevel?.name ?? ""}
+                description={selectedLevel?.description ?? ""}
+                onClose={() => setSelectedLevel(null)}
+            />
         </Animated.View>
     );
 }

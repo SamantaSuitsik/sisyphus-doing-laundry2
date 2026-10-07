@@ -31,7 +31,8 @@ import Counter from "@/components/game/components/Counter";
 import {OutlineButton} from "@/components/ui/FrameButton";
 import {ChoosePlayerModal} from "@/components/game/components/Modal";
 import {characterFaces} from "@/constants/CharacterImages";
-import Backdrop from "@/components/ui/Backdrop"; // adjust path
+import Backdrop from "@/components/ui/Backdrop";
+import {PinkButton} from "@/components/ui/PinkButton"; // adjust path
 
 type Player = GameState["players"][number];
 
@@ -432,8 +433,8 @@ export default function GameView({
                 <View className="flex-row gap-3">
                     <Counter onPress={earnPoint} />
                     <View className="flex-1">
-                        <OutlineButton
-                            label="Next"
+                        <PinkButton
+                            title="Next"
                             onPress={nextTurn}
                             disabled={!isMyTurn}
                         />

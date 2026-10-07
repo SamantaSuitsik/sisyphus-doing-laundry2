@@ -11,6 +11,7 @@ import Animated, {
 } from "react-native-reanimated";
 import {OutlineButton} from "@/components/ui/FrameButton";
 import {colors} from "@/constants/GameColors";
+import {PinkButton} from "@/components/ui/PinkButton";
 
 type FloatingPlusOneProps = {
     id: number;
@@ -99,7 +100,7 @@ export default function Counter({ className = "", onPress }: ICounterProps) {
                     <FloatingPlusOne key={id} id={id} onFinish={removeAnimation} />
                 ))}
             </View>
-            <OutlineButton label="Sip" onPress={handlePress} />
+            <PinkButton title="Sip" onPress={handlePress} />
         </View>
     );
 }

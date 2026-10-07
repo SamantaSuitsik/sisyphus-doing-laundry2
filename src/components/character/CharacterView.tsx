@@ -305,7 +305,7 @@ export default function CharacterView({
 
                 {/* Text sits over the faded bottom of the portrait */}
                 <View className="px-6" style={{ marginTop: -56 }}>
-                    <Animated.View style={[{ alignItems: "center" }, fadeUp(textAnims[0])]}>
+                    <Animated.View style={[{ alignItems: "stretch" }, fadeUp(textAnims[0])]}>
                         <Text
                             className="text-white text-4xl font-extrabold text-center"
                             style={{

@@ -4,6 +4,7 @@ import {useState} from "react";
 import {getCharacter} from "@/shared/characters/characters";
 import CharacterView from "@/components/character/CharacterView";
 import {router} from "expo-router";
+import {UserStar} from "lucide-react-native";
 
 export default function TabLayout() {
     const [characterSeen, setCharacterSeen] = useState(false);
@@ -28,15 +29,15 @@ export default function TabLayout() {
     return (
         <NativeTabs>
             <NativeTabs.Trigger name="index">
-                <NativeTabs.Trigger.Icon sf="key.card" md="cards" />
+                <NativeTabs.Trigger.Icon sf="suit.spade.fill" md="playing_cards" />
                 <NativeTabs.Trigger.Label>Game</NativeTabs.Trigger.Label>
             </NativeTabs.Trigger>
             <NativeTabs.Trigger name="character">
-                <NativeTabs.Trigger.Icon sf="gear" md="settings" />
+                <NativeTabs.Trigger.Icon sf="person.fill" md="person" />
                 <NativeTabs.Trigger.Label>You</NativeTabs.Trigger.Label>
             </NativeTabs.Trigger>
             <NativeTabs.Trigger name="traits">
-                <NativeTabs.Trigger.Icon sf="gear" md="settings" />
+                <NativeTabs.Trigger.Icon sf="star.fill" md="stars" />
                 <NativeTabs.Trigger.Label>Traits</NativeTabs.Trigger.Label>
             </NativeTabs.Trigger>
         </NativeTabs>

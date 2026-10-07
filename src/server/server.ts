@@ -90,7 +90,7 @@ function handleMessage(
     }
     if (data.type === "REMOVE_POINT") {
         if (!socket.playerId) return;
-        game.removePoint(socket.playerId);
+        game.removePoint(socket);
     }
 
 }

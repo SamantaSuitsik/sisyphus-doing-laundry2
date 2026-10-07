@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Text, View } from "react-native";
+import {Pressable, Text, View} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Animated, {
     useAnimatedStyle,
@@ -23,11 +23,12 @@ interface IProps {
     isNext?: boolean;
     /** Points needed for this level (shown while it is the next one). */
     cost?: number;
+    onPress?: () => void;
 }
 
 const BOX = 60;
 
-export function TraitLevelNode({ icon, name, unlocked, isNext = false, cost }: IProps) {
+export function TraitLevelNode({ icon, name, unlocked, isNext = false, cost, onPress }: IProps) {
     const Icon = traitIcons[icon] ?? CircleQuestionMark;
     const pop = useSharedValue(1);
     const first = useRef(true);
@@ -49,7 +50,7 @@ export function TraitLevelNode({ icon, name, unlocked, isNext = false, cost }: I
     const style = useAnimatedStyle(() => ({ transform: [{ scale: pop.value }] }));
 
     return (
-        <View style={{ width: 76, alignItems: "center" }}>
+        <Pressable onPress={onPress} style={{ width: 76, alignItems: "center" }}>
             <Animated.View style={style}>
                 {unlocked ? (
                     <LinearGradient
@@ -103,6 +104,6 @@ export function TraitLevelNode({ icon, name, unlocked, isNext = false, cost }: I
                     {cost} pts
                 </Text>
             )}
-        </View>
+        </Pressable>
     );
 }
