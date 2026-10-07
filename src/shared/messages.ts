@@ -5,6 +5,7 @@ export type ClientMessage =
     | {
     type: "JOIN_GAME";
     name: string;
+    playerId: string;
 }
     | {
     type: "NEXT_TURN";

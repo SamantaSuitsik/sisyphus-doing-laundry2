@@ -38,28 +38,22 @@ export class Game {
         this.turnOrder = newOrder;
     }
 
-    joinGame(socket: PlayerSocket, name: string) {
-        const id = crypto.randomUUID();
-
+    joinOrReJoin(socket: PlayerSocket, name: string, playerId: string) {
+        const existing = this.players.find((p) => p.id === playerId);
+        if (existing) {
+            existing.connected = true;   // keeps points, traits, turn
+            return existing;
+        }
         const player: Player = {
-            id,
+            id: playerId,
             name,
             points: 0,
             traitPoints: {},
             characterId: this.drawCharacter().id,
             connected: true,
         };
-
         this.players.push(player);
-
-        socket.playerId = id;
-
-        const response: ServerMessage = {
-            type: "JOINED_GAME",
-            player,
-        };
-
-        socket.send(JSON.stringify(response));
+        return player;
 
     }
 
@@ -116,12 +110,15 @@ export class Game {
     }
 
     findNextPlayer(playerId: string = this.currentPlayerId!): string {
-        const currentIndex = this.turnOrder.indexOf(playerId);
+        const len = this.turnOrder.length;
+        const start = this.turnOrder.indexOf(playerId);
 
-        const nextPlayerIndex =
-            (currentIndex + 1) % this.turnOrder.length;
-
-        return this.turnOrder[nextPlayerIndex];
+        for (let i = 1; i <= len; i++) {
+            const id = this.turnOrder[(start + i) % len];
+            const p = this.players.find((p) => p.id === id);
+            if (p?.connected) return id;
+        }
+        return playerId;
     }
 
     earnPoint(socket: PlayerSocket) {

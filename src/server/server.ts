@@ -2,6 +2,7 @@ import WebSocket, {WebSocketServer} from "ws";
 import type {ClientMessage, ServerMessage,} from "@/shared/messages";
 import {Game} from "@/server/game/Game";
 import {TraitId} from "@/shared/traits/traits";
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export interface PlayerSocket extends WebSocket {
     playerId?: string;
@@ -12,7 +13,6 @@ const wss = new WebSocketServer({
 });
 
 const game = new Game();
-
 console.log("Server running on ws://localhost:3000");
 
 wss.on("connection", (socket: PlayerSocket) => {
@@ -25,6 +25,7 @@ wss.on("connection", (socket: PlayerSocket) => {
             ) as ClientMessage;
 
             handleMessage(socket, data);
+            console.log("JOIN_GAME", data);
         } catch (error) {
             console.error("Invalid message:", error);
         }
@@ -33,17 +34,19 @@ wss.on("connection", (socket: PlayerSocket) => {
     socket.on("close", () => {
         console.log("Client disconnected");
 
-        if (socket.playerId) {
-            const player = game.players.find(
-                (player) => player.id === socket.playerId,
-            );
+        if (!socket.playerId) return;
 
-            if (player) {
-                player.connected = false;
-            }
+        const stillConnected = [...wss.clients].some(
+            (c) => c !== socket && (c as PlayerSocket).playerId === socket.playerId,
+        );
+        if (stillConnected) return;
 
-            broadcastGameState();
+        const player = game.players.find((p) => p.id === socket.playerId);
+        if (player) {
+            player.connected = false;
         }
+
+        broadcastGameState();
     });
 });
 
@@ -52,7 +55,21 @@ function handleMessage(
     data: ClientMessage,
 ): void {
     if (data.type === "JOIN_GAME") {
-        game.joinGame(socket, data.name);
+        if (!data.playerId) {
+            socket.send(JSON.stringify({ type: "ERROR", message: "Missing playerId" }));
+            return;
+        }
+
+        const player = game.joinOrReJoin(socket, data.name, data.playerId);
+
+        socket.playerId = player.id;
+
+        const response: ServerMessage = {
+            type: "JOINED_GAME",
+            player,
+        };
+        socket.send(JSON.stringify(response));
+
         broadcastGameState();
     }
 
@@ -142,4 +159,14 @@ function spendTraitPoint(socket: PlayerSocket, traitId: TraitId) {
         points: result.points,
         traitPoints: result.traitPoints,
     }));
+
+    async function getPlayerId() {
+        let id = await AsyncStorage.getItem("playerId");
+        if (!id) {
+            id = Math.random().toString(36).slice(2) + Date.now().toString(36);
+            await AsyncStorage.setItem("playerId", id);
+        }
+        return id;
+    }
+
 }

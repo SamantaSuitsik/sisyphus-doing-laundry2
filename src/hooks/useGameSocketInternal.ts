@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 
 import type { ClientMessage, ServerMessage } from "@/shared/messages";
 import type { GameState } from "@/shared/types";
 import {TraitId} from "@/shared/traits/traits";
+import { getPlayerId } from "./utils";
+import {AppState} from "react-native";
 
 const SERVER_URL = "ws://192.168.1.147:3000";
 
@@ -33,14 +35,29 @@ export function useGameSocketInternal(): UseGameSocketResult {
     const [error, setError] = useState<string | null>(null);
     const [socket, setSocket] = useState<WebSocket | null>(null);
 
-    useEffect(() => {
+    const wsRef = useRef<WebSocket | null>(null);
+    const nameRef = useRef<string | null>(null); // remembers the name for auto-rejoin
+
+    const connect = useCallback(() => {
         const ws = new WebSocket(SERVER_URL);
+        wsRef.current = ws;
 
-        ws.onopen = () => {
+        ws.onopen = async () => {
             console.log("WebSocket connected");
-
             setConnected(true);
             setError(null);
+            setSocket(ws);
+
+            // Auto-rejoin after a reconnect
+            if (nameRef.current) {
+                ws.send(
+                    JSON.stringify({
+                        type: "JOIN_GAME",
+                        name: nameRef.current,
+                        playerId: await getPlayerId(),
+                    }),
+                );
+            }
         };
 
         ws.onmessage = (event: MessageEvent<string>) => {
@@ -81,16 +98,32 @@ export function useGameSocketInternal(): UseGameSocketResult {
 
         ws.onclose = () => {
             console.log("WebSocket disconnected");
-
-            setConnected(false);
-        };
-
-        setSocket(ws);
-
-        return () => {
-            ws.close();
+            // ignore close events from old sockets we replaced
+            if (wsRef.current === ws) setConnected(false);
         };
     }, []);
+
+    useEffect(() => {
+        connect();
+
+        // When the app returns to the foreground, replace the socket
+        // (iOS can leave it looking "open" while it's actually dead)
+        const sub = AppState.addEventListener("change", (state) => {
+            if (state === "active") {
+                const old = wsRef.current;
+                wsRef.current = null;
+                old?.close();
+                connect();
+            }
+        });
+
+        return () => {
+            sub.remove();
+            const old = wsRef.current;
+            wsRef.current = null;
+            old?.close();
+        };
+    }, [connect]);
 
     const sendMessage = useCallback(
         (message: ClientMessage) => {
@@ -105,10 +138,12 @@ export function useGameSocketInternal(): UseGameSocketResult {
     );
 
     const joinGame = useCallback(
-        (name: string) => {
+        async (name: string) => {
+            nameRef.current = name;
             sendMessage({
                 type: "JOIN_GAME",
                 name,
+                playerId: await getPlayerId(),
             });
         },
         [sendMessage],
