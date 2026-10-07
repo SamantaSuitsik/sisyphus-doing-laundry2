@@ -1,61 +1,80 @@
-import {ScrollView, View} from "react-native";
-import {Text} from "@/components/ui/text";
+import { ScrollView, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Animated, { FadeInDown } from "react-native-reanimated";
+
 import PointsDisplay from "@/components/ui/PointsDisplay";
-import {TRAITS, TraitId} from "@/shared/traits/traits";
-import {TraitTree} from "@/components/traits/components/TraitTree";
-import {SafeAreaView} from "react-native-safe-area-context";
+import { TRAITS, TraitId } from "@/shared/traits/traits";
+import { TraitTree } from "@/components/traits/components/TraitTree";
+import Backdrop from "@/components/ui/Backdrop";
+import {colors} from "@/constants/GameColors";
+import UndoSipButton from "@/components/traits/components/UndoSipButton";
 
 interface TraitsViewProps {
     myPoints: number;
     myTraitPoints: Partial<Record<TraitId, number>>;
     spendTraitPoint: (traitId: TraitId) => void;
+    removePoint: () => void;
 }
 
 export default function TraitsView({
                                        myPoints,
                                        myTraitPoints,
                                        spendTraitPoint,
+                                       removePoint,
                                    }: TraitsViewProps) {
+    const insets = useSafeAreaInsets();
+
     return (
-        <SafeAreaView className="flex-1 bg-background">
+        <View className="flex-1" style={{ backgroundColor: colors.night }}>
+            <Backdrop warm />
+
             <ScrollView
-                contentContainerClassName="px-5 pt-6 pb-10"
                 showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingTop: insets.top + 8,
+                    paddingHorizontal: 16,
+                    paddingBottom: 32,
+                }}
             >
+                <View className="flex-row items-center">
+                    <Animated.View
+                        entering={FadeInDown.springify().damping(14)}
+                        className="flex-1 mr-3"
+                    >
+                        <Text
+                            className="text-white text-4xl font-extrabold"
+                            style={{
+                                textShadowColor: colors.interactionPink,
+                                textShadowRadius: 14,
+                                textShadowOffset: { width: 0, height: 0 },
+                            }}
+                        >
+                            Traits
+                        </Text>
+                        <Text className="text-white/65 text-base mt-1">
+                            Spend your sips to unlock perks.
+                        </Text>
+                    </Animated.View>
 
-                <View className="items-center">
-                    <Text variant="h1">
-                        Traits
-                    </Text>
-
-                    <Text className="mt-2 text-center text-muted-foreground">
-                        Spend your points to unlock perks.
-                    </Text>
-
-                    <View className="self-end">
-                        <PointsDisplay
-                            points={myPoints}
-                            size={180}
-                        />
+                    <View className="items-end gap-1">
+                        <PointsDisplay points={myPoints} size={130} />
+                        <UndoSipButton onPress={removePoint} disabled={myPoints <= 0} />
                     </View>
                 </View>
 
-                <View className="mt-8">
-                    {TRAITS.map(trait => (
+                <View className="mt-6">
+                    {TRAITS.map((trait, index) => (
                         <TraitTree
                             key={trait.id}
+                            index={index}
                             trait={trait}
-                            spentPoints={
-                                myTraitPoints[trait.id] ?? 0
-                            }
+                            spentPoints={myTraitPoints[trait.id] ?? 0}
                             availablePoints={myPoints}
-                            onSpendPoint={() =>
-                                spendTraitPoint(trait.id)
-                            }
+                            onSpendPoint={() => spendTraitPoint(trait.id)}
                         />
                     ))}
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </View>
     );
 }

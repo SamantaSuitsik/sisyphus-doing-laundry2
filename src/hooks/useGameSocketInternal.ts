@@ -20,6 +20,7 @@ export interface UseGameSocketResult {
     choosePlayer: (name: string) => void;
     myTraitPoints: Partial<Record<TraitId, number>>;
     spendTraitPoint: (traitId: TraitId) => void;
+    removePoint: () => void;
 }
 
 export function useGameSocketInternal(): UseGameSocketResult {
@@ -148,6 +149,12 @@ export function useGameSocketInternal(): UseGameSocketResult {
         });
     }, [sendMessage])
 
+    const removePoint = useCallback(() => {
+        sendMessage({
+            type: "REMOVE_POINT",
+        });
+    }, [sendMessage]);
+
     return {
         game,
         myPlayerId,
@@ -160,6 +167,7 @@ export function useGameSocketInternal(): UseGameSocketResult {
         earnPoint,
         choosePlayer,
         myTraitPoints,
-        spendTraitPoint
+        spendTraitPoint,
+        removePoint
     };
 }

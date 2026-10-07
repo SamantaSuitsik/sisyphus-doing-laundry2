@@ -2,11 +2,12 @@ import crypto from "crypto";
 import type {Card, GameState, GameStatus, PendingAction, Player} from "@/shared/types";
 import type {ServerMessage} from "@/shared/messages";
 import {PlayerSocket} from "@/server/server";
-import {deck} from "@/server/Deck";
+import {DECK} from "@/server/Deck";
 import {randomInt} from "@/server/game/utils"
 import {applyCardActions} from "@/server/game/Rules";
 import {TraitId, TRAITS} from "@/shared/traits/traits";
 import {getTraitTotalCost} from "@/shared/traits/utils";
+import {Character, CHARACTERS} from "@/shared/characters/characters";
 
 export class Game {
     public players: Player[] = [];
@@ -16,7 +17,8 @@ export class Game {
     public pendingAction: PendingAction = null;
 
     private turnOrder: string[] = [];
-    private remainingCards: Card[] = [...deck];
+    private remainingCards: Card[] = [...DECK];
+    private availableCharacters: Character[] = [...CHARACTERS];
 
     getState(): GameState {
         return {
@@ -26,10 +28,6 @@ export class Game {
             status: this.status ?? "waiting",
             pendingAction: this.pendingAction
         }
-    }
-
-    getCurrentPlayer(): Player | null {
-        return this.players?.find(p => p.id === this.currentPlayerId) ?? null;
     }
 
     getTurnOrder(): string[] {
@@ -48,6 +46,7 @@ export class Game {
             name,
             points: 0,
             traitPoints: {},
+            characterId: this.drawCharacter().id,
             connected: true,
         };
 
@@ -81,7 +80,7 @@ export class Game {
     getNextCard(): Card | null {
         if (this.remainingCards.length === 0) {
             console.log("NEW PACK OF CARDS!");
-            this.remainingCards = [...deck];
+            this.remainingCards = [...DECK];
             console.log(this.remainingCards);
             //todo: testi kas tootab
         }
@@ -253,5 +252,27 @@ export class Game {
             points: player.points,
             traitPoints: player.traitPoints,
         };
+    }
+
+    private drawCharacter(): Character {
+        if (this.availableCharacters.length === 0) {
+            this.availableCharacters = [...CHARACTERS];
+        }
+        const i = randomInt(0, this.availableCharacters.length-1)
+        return this.availableCharacters.splice(i, 1)[0];
+    }
+
+    removePoint(socket: PlayerSocket) {
+        const player = this.players.find((p) => p.id === socket.playerId);
+        if (!player) return;
+
+        if (player.points > 0) player.points -= 1;
+
+        const response: ServerMessage = {
+            type: "POINTS_UPDATED",
+            points: player.points,
+        };
+
+        socket.send(JSON.stringify(response));
     }
 }

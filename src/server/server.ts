@@ -88,6 +88,10 @@ function handleMessage(
     if (data.type === "SPEND_TRAIT_POINT") {
         spendTraitPoint(socket, data.traitId);
     }
+    if (data.type === "REMOVE_POINT") {
+        if (!socket.playerId) return;
+        game.removePoint(socket.playerId);
+    }
 
 }
 

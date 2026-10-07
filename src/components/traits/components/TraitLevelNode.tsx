@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import Animated, {
     useAnimatedStyle,
     useSharedValue,
@@ -7,149 +8,101 @@ import Animated, {
     withSpring,
     withTiming,
 } from "react-native-reanimated";
-
-import { Text } from "@/components/ui/text";
-import { TraitGlow } from "./TraitGlow";
+import {
+    CircleQuestionMark,
+} from "lucide-react-native";
+import { TraitIconName } from "@/shared/traits/traits";
 import {traitIcons} from "@/components/traits/constants/TraitIcons";
+import { colors } from "@/constants/GameColors";
 
-interface TraitLevelNodeProps {
-    icon: keyof typeof traitIcons;
+interface IProps {
+    icon: TraitIconName;
     name: string;
     unlocked: boolean;
+    /** The next level you are working towards. */
+    isNext?: boolean;
+    /** Points needed for this level (shown while it is the next one). */
+    cost?: number;
 }
 
-export function TraitLevelNode({
-                                   icon,
-                                   name,
-                                   unlocked,
-                               }: TraitLevelNodeProps) {
-    const Icon = traitIcons[icon];
+const BOX = 60;
 
-    const scale = useSharedValue(1);
-    const glowOpacity = useSharedValue(0);
-    const glowScale = useSharedValue(0.7);
+export function TraitLevelNode({ icon, name, unlocked, isNext = false, cost }: IProps) {
+    const Icon = traitIcons[icon] ?? CircleQuestionMark;
+    const pop = useSharedValue(1);
+    const first = useRef(true);
 
-    const firstRender = useRef(true);
-
+    // little pop when a level gets unlocked (not on first render)
     useEffect(() => {
-        /*
-         * Don't play the unlock animation when the screen
-         * is first loaded. Only play it when the node
-         * changes from locked -> unlocked.
-         */
-        if (firstRender.current) {
-            firstRender.current = false;
-
-            if (unlocked) {
-                scale.value = 1;
-                glowOpacity.value = 0;
-                glowScale.value = 0.7;
-            }
-
+        if (first.current) {
+            first.current = false;
             return;
         }
-
-        if (!unlocked) {
-            scale.value = 1;
-            glowOpacity.value = 0;
-            glowScale.value = 0.7;
-            return;
+        if (unlocked) {
+            pop.value = withSequence(
+                withTiming(1.18, { duration: 110 }),
+                withSpring(1, { damping: 13, stiffness: 300 })
+            );
         }
-
-        // Big satisfying pop
-        scale.value = withSequence(
-            withTiming(1.18, {
-                duration: 120,
-            }),
-            withSpring(1, {
-                damping: 8,
-                stiffness: 180,
-            }),
-        );
-
-        // One-time glow burst
-        glowOpacity.value = withSequence(
-            withTiming(0.7, {
-                duration: 100,
-            }),
-            withTiming(0, {
-                duration: 700,
-            }),
-        );
-
-        glowScale.value = withSequence(
-            withTiming(1, {
-                duration: 120,
-            }),
-            withTiming(1.25, {
-                duration: 650,
-            }),
-        );
     }, [unlocked]);
 
-    const nodeStyle = useAnimatedStyle(() => ({
-        transform: [
-            {
-                scale: scale.value,
-            },
-        ],
-    }));
-
-    const glowStyle = useAnimatedStyle(() => ({
-        opacity: glowOpacity.value,
-        transform: [
-            {
-                scale: glowScale.value,
-            },
-        ],
-    }));
+    const style = useAnimatedStyle(() => ({ transform: [{ scale: pop.value }] }));
 
     return (
-        <View className="items-center">
-            <View className="h-[50px] w-[50px] items-center justify-center">
-
-                {unlocked && (
-                    <Animated.View
-                        pointerEvents="none"
-                        style={glowStyle}
-                        className="absolute h-[50px] w-[50px] items-center justify-center"
+        <View style={{ width: 76, alignItems: "center" }}>
+            <Animated.View style={style}>
+                {unlocked ? (
+                    <LinearGradient
+                        colors={[colors.pinkLight, colors.interactionPink]}
+                        style={{
+                            width: BOX,
+                            height: BOX,
+                            borderRadius: 20,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            shadowColor: colors.interactionPink,
+                            shadowOpacity: 0.8,
+                            shadowRadius: 14,
+                            shadowOffset: { width: 0, height: 0 },
+                            elevation: 8,
+                        }}
                     >
-                        <TraitGlow size={64} />
-                    </Animated.View>
+                        <Icon size={28} color={colors.textOnPink} strokeWidth={2.2} />
+                    </LinearGradient>
+                ) : (
+                    <View
+                        style={{
+                            width: BOX,
+                            height: BOX,
+                            borderRadius: 20,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: colors.glass,
+                            borderWidth: isNext ? 2 : 1,
+                            borderColor: isNext ? colors.interactionPink + "AA" : colors.glassBorder,
+                        }}
+                    >
+                        <Icon
+                            size={26}
+                            color={isNext ? colors.interactionPink : "rgba(255,255,255,0.35)"}
+                            strokeWidth={2}
+                        />
+                    </View>
                 )}
-
-                {/* Node */}
-                <Animated.View
-                    style={nodeStyle}
-                    className={[
-                        "h-[44px] w-[44px] items-center justify-center rounded-full border-2",
-                        unlocked
-                            ? "border-character-blue bg-character-blue"
-                            : "border-border bg-background",
-                    ].join(" ")}
-                >
-                    <Icon
-                        size={20}
-                        strokeWidth={2.2}
-                        color={
-                            unlocked
-                                ? "#FFFFFF"
-                                : "#888888"
-                        }
-                    />
-                </Animated.View>
-            </View>
+            </Animated.View>
 
             <Text
-                className={[
-                    "mt-1 text-[9px] font-semibold",
-                    unlocked
-                        ? "text-foreground"
-                        : "text-muted-foreground",
-                ].join(" ")}
+                className="mt-2 text-sm font-bold text-center"
+                style={{ color: unlocked ? "#FFFFFF" : "rgba(255,255,255,0.5)" }}
+                numberOfLines={1}
             >
                 {name}
             </Text>
+            {isNext && !unlocked && cost !== undefined && (
+                <Text className="text-xs font-semibold" style={{ color: colors.interactionPink }}>
+                    {cost} pts
+                </Text>
+            )}
         </View>
     );
 }

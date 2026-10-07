@@ -23,6 +23,9 @@ export type ClientMessage =
     type: "SPEND_TRAIT_POINT";
     traitId: TraitId
 }
+    | {
+    type: "REMOVE_POINT"
+}
 
 export type ServerMessage =
     | {

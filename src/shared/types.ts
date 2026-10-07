@@ -1,10 +1,12 @@
 import {TraitId} from "@/shared/traits/traits";
+import {CharacterId} from "@/shared/characters/characters";
 
 export interface Player {
     id: string,
     name: string,
     points: number,
     traitPoints: Partial<Record<TraitId, number>>,
+    characterId: CharacterId,
     connected: boolean
 }
 

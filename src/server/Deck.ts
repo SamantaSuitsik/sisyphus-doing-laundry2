@@ -1,6 +1,6 @@
 import {Card} from "@/shared/types";
 
-export const deck: Card[] = [
+export const DECK: Card[] = [
     {
         id: "1",
         name: "men_drink_ok",
