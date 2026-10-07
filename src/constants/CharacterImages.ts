@@ -17,11 +17,11 @@ export const characterImages: Record<CharacterId, ImageSourcePropType> = {
 };
 
 export const characterFaces: Record<CharacterId, ImageSourcePropType> = {
-    baller: require("@/assets/characters/faces/icon_baller.png"),
-    cocktailspecialist: require("@/assets/characters/faces/icon_coctailspecialist.png"),
-    comrade: require("@/assets/characters/faces/icon_comrade.png"),
-    dj: require("@/assets/characters/faces/icon_DJ.png"),
-    gymlover: require("@/assets/characters/faces/icon_gymlover.png"),
-    strategist: require("@/assets/characters/faces/icon_strategist.png"),
-    thief: require("@/assets/characters/faces/icon_thief.png"),
+    baller: require("@/assets/characters/assets/icons/icon_baller.png"),
+    cocktailspecialist: require("@/assets/characters/assets/icons/icon_coctailspecialist.png"),
+    comrade: require("@/assets/characters/assets/icons/icon_comrade.png"),
+    dj: require("@/assets/characters/assets/icons/icon_DJ.png"),
+    gymlover: require("@/assets/characters/assets/icons/icon_gymlover.png"),
+    strategist: require("@/assets/characters/fassets/icons/icon_strategist.png"),
+    thief: require("@/assets/characters/assets/icons/icon_thief.png"),
 };

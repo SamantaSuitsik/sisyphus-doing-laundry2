@@ -97,6 +97,13 @@ export const TRAITS: TraitDefinition[] = [
         description: "Road to great knowledge",
         levels: [
             {
+                id: "trivia0",
+                name: "Darkness",
+                description: "Nothing cool happening yet",
+                cost: 0,
+                icon: "squircle-dashed",
+            },
+            {
                 id: "trivia1",
                 name: "Trivia",
                 description: "Do one trivia, wrong answer = drink",
@@ -124,6 +131,13 @@ export const TRAITS: TraitDefinition[] = [
         name: "Gambling",
         description: "Road to maxing your potential",
         levels: [
+            {
+                id: "gambling0",
+                name: "Darkness",
+                description: "Nothing cool happening yet",
+                cost: 0,
+                icon: "squircle-dashed",
+            },
             {
                 id: "gambling1",
                 name: "1 sip bets",
